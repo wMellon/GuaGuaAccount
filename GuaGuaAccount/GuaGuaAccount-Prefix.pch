@@ -1,0 +1,25 @@
+//
+//  GuaGuaAccount-Prefix.pch
+//  GuaGuaAccount
+//
+//  Created by xxb on 17/1/15.
+//  Copyright © 2017年 xxb. All rights reserved.
+//
+
+#ifndef GuaGuaAccount_Prefix_pch
+#define GuaGuaAccount_Prefix_pch
+
+#import "MacroDefinition.h"
+
+//category
+#import "UIView+Convenience.h"
+#import "UIViewController+UI.h"
+#import "NSString+Common.h"
+#import "NSDate+Common.h"
+#import "UIView+Convenience.h"
+
+//第三方
+#import "NSObject+LKDBHelper.h"
+#import "NSObject+YYModel.h"
+
+#endif /* GuaGuaAccount_Prefix_pch */
