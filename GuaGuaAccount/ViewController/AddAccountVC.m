@@ -14,6 +14,7 @@
 #import "AccountViewmodel.h"
 
 #define NumOfEachSection 4  //每行4个
+#define HorizontalOffset 5 //水平间距
 
 @interface AddAccountVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate>{
     NSInteger _accountType;
@@ -34,6 +35,13 @@
     [self setupContentView];
     [self dataInit];
     [self reloadViewData];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if(self.addAccountView.menuView.isHidden){
+        [self.addAccountView.menuView show];
+    }
 }
 
 -(void)dataInit{
@@ -57,7 +65,7 @@
 -(void)reloadLeftMoney{
     GGWeakSelfDefine
     [AccountViewmodel getLastLeftMoneyWithBlock:^(NSString *leftCount, NSString *consumeCount) {
-        GGWeakSelf.addAccountView.tipLabel.text = [NSString stringWithFormat:@"本月剩余%@，已花费%@", leftCount,  consumeCount];
+        GGWeakSelf.addAccountView.menuLabel.text = [NSString stringWithFormat:@"本月剩余%@，已花费%@", leftCount,  consumeCount];
     }];
 }
 
@@ -67,8 +75,12 @@
     }else{
         self.categorySource = [AccountViewmodel getInComeCategorys];
     }
+    //加载之后，重新刷新UI
+    [self refreshUI];
     [self.addAccountView.categoryCollectionView reloadData];
 }
+
+
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -83,7 +95,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat width = self.addAccountView.categoryCollectionView.frameWidth / NumOfEachSection;
+    CGFloat width = self.addAccountView.categoryCollectionView.frameWidth / NumOfEachSection - HorizontalOffset * (NumOfEachSection - 1);
     return CGSizeMake(width, width);
 }
 
@@ -101,7 +113,7 @@
 
 //设置每个item垂直间距
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
-    return 0;
+    return 10;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -114,7 +126,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     CategoryCell *cell = (CategoryCell*)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.label.textColor = [UIColor redColor];
+    cell.label.textColor = [UIColor whiteColor];
+    cell.label.backgroundColor = [UIColor colorWithRed:0 green:0.722 blue:1 alpha:1];
     CategoryModel *model = self.categorySource[indexPath.row];
     self.accountModel.categoryId = model.categoryId;
     self.accountModel.categoryName = model.categoryName;
@@ -123,6 +136,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
     CategoryCell *cell = (CategoryCell*)[collectionView cellForItemAtIndexPath:indexPath];
     cell.label.textColor = [UIColor blackColor];
+    cell.label.backgroundColor = RGB(170, 170, 170);
 }
 
 
@@ -130,6 +144,12 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     self.accountModel.price = textField.text;
+}
+
+-(void)refreshUI{
+//    CGFloat width = self.addAccountView.categoryCollectionView.frameWidth / NumOfEachSection - HorizontalOffset * (NumOfEachSection - 1);
+//    NSInteger numRow = ceil(self.categorySource.count / NumOfEachSection);
+//    if(numRow * width > )
 }
 
 #pragma mark - Other delegate
@@ -178,6 +198,17 @@
     [self.addAccountView.categoryCollectionView reloadData];
     [self reloadCategory];
     [self reloadLeftMoney];
+}
+
+
+/**
+ 刷新动画
+ */
+-(void)refreshAni{
+    if(self.addAccountView.menuView.isShown){
+        [self.addAccountView.menuView hide];
+    }
+    [self.addAccountView.menuView show];
 }
 
 #pragma mark - Properrtys

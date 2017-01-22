@@ -117,6 +117,10 @@
 		F16EADC81E31E89D00F70CEF /* WaveChartVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F16EADC71E31E89D00F70CEF /* WaveChartVC.m */; };
 		F16EADCB1E31EC1400F70CEF /* DateSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = F16EADCA1E31EC1400F70CEF /* DateSelectView.m */; };
 		F16EADCD1E31EC1E00F70CEF /* DateSelectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F16EADCC1E31EC1E00F70CEF /* DateSelectView.xib */; };
+		F1BE1AC91E343B75007E9EA3 /* AccountListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE1AC71E343B75007E9EA3 /* AccountListCell.m */; };
+		F1BE1ACA1E343B75007E9EA3 /* AccountListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1BE1AC81E343B75007E9EA3 /* AccountListCell.xib */; };
+		F1BE1ACE1E3451DE007E9EA3 /* AccountListSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F1BE1ACD1E3451DE007E9EA3 /* AccountListSectionHeaderView.m */; };
+		F1BE1AD01E3451E6007E9EA3 /* AccountListSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F1BE1ACF1E3451E6007E9EA3 /* AccountListSectionHeaderView.xib */; };
 		F1D15D841E32F82300BEF16B /* echarts.html in Resources */ = {isa = PBXBuildFile; fileRef = F1D15D811E32F82300BEF16B /* echarts.html */; };
 		F1D15D871E32F82F00BEF16B /* js in Resources */ = {isa = PBXBuildFile; fileRef = F1D15D861E32F82F00BEF16B /* js */; };
 		F1D15D8A1E32FB4600BEF16B /* AccountStatisticsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D15D891E32FB4600BEF16B /* AccountStatisticsModel.m */; };
@@ -131,6 +135,8 @@
 		F1EF86301E267BAF00229740 /* POPTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = F1EF862C1E267BAF00229740 /* POPTextField.m */; };
 		F1EF86311E267BAF00229740 /* POPView.m in Sources */ = {isa = PBXBuildFile; fileRef = F1EF862E1E267BAF00229740 /* POPView.m */; };
 		F1EF86341E267C4300229740 /* AddAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = F1EF86331E267C4300229740 /* AddAccountView.m */; };
+		F1F7140F1E339CB500624DF6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = F1F7140C1E339CB500624DF6 /* LICENSE */; };
+		F1F714101E339CB500624DF6 /* MGFashionMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = F1F7140E1E339CB500624DF6 /* MGFashionMenuView.m */; };
 		F1F90A201E2E588A00D91FB9 /* AccountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F1F90A1F1E2E588A00D91FB9 /* AccountModel.m */; };
 /* End PBXBuildFile section */
 
@@ -356,6 +362,12 @@
 		F16EADC91E31EC1400F70CEF /* DateSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateSelectView.h; sourceTree = "<group>"; };
 		F16EADCA1E31EC1400F70CEF /* DateSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateSelectView.m; sourceTree = "<group>"; };
 		F16EADCC1E31EC1E00F70CEF /* DateSelectView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DateSelectView.xib; sourceTree = "<group>"; };
+		F1BE1AC61E343B75007E9EA3 /* AccountListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountListCell.h; sourceTree = "<group>"; };
+		F1BE1AC71E343B75007E9EA3 /* AccountListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountListCell.m; sourceTree = "<group>"; };
+		F1BE1AC81E343B75007E9EA3 /* AccountListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountListCell.xib; sourceTree = "<group>"; };
+		F1BE1ACC1E3451DE007E9EA3 /* AccountListSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountListSectionHeaderView.h; sourceTree = "<group>"; };
+		F1BE1ACD1E3451DE007E9EA3 /* AccountListSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountListSectionHeaderView.m; sourceTree = "<group>"; };
+		F1BE1ACF1E3451E6007E9EA3 /* AccountListSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountListSectionHeaderView.xib; sourceTree = "<group>"; };
 		F1D15D811E32F82300BEF16B /* echarts.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = echarts.html; sourceTree = "<group>"; };
 		F1D15D861E32F82F00BEF16B /* js */ = {isa = PBXFileReference; lastKnownFileType = folder; path = js; sourceTree = "<group>"; };
 		F1D15D881E32FB4600BEF16B /* AccountStatisticsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountStatisticsModel.h; sourceTree = "<group>"; };
@@ -381,6 +393,9 @@
 		F1EF862E1E267BAF00229740 /* POPView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POPView.m; sourceTree = "<group>"; };
 		F1EF86321E267C4300229740 /* AddAccountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddAccountView.h; sourceTree = "<group>"; };
 		F1EF86331E267C4300229740 /* AddAccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddAccountView.m; sourceTree = "<group>"; };
+		F1F7140C1E339CB500624DF6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		F1F7140D1E339CB500624DF6 /* MGFashionMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGFashionMenuView.h; sourceTree = "<group>"; };
+		F1F7140E1E339CB500624DF6 /* MGFashionMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGFashionMenuView.m; sourceTree = "<group>"; };
 		F1F90A1E1E2E588A00D91FB9 /* AccountModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountModel.h; sourceTree = "<group>"; };
 		F1F90A1F1E2E588A00D91FB9 /* AccountModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -532,6 +547,7 @@
 		F148BF911E2B609400274C9A /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				F1F7140B1E339CB500624DF6 /* MGFashionMenuView */,
 				F13CAF3A1E320FA90025A874 /* EChart */,
 				F16EADB21E31E7BF00F70CEF /* YSLContainerViewController */,
 				F148BF921E2B60A500274C9A /* MaterialControls */,
@@ -796,6 +812,12 @@
 				F16EADC91E31EC1400F70CEF /* DateSelectView.h */,
 				F16EADCA1E31EC1400F70CEF /* DateSelectView.m */,
 				F16EADCC1E31EC1E00F70CEF /* DateSelectView.xib */,
+				F1BE1AC61E343B75007E9EA3 /* AccountListCell.h */,
+				F1BE1AC71E343B75007E9EA3 /* AccountListCell.m */,
+				F1BE1AC81E343B75007E9EA3 /* AccountListCell.xib */,
+				F1BE1ACC1E3451DE007E9EA3 /* AccountListSectionHeaderView.h */,
+				F1BE1ACD1E3451DE007E9EA3 /* AccountListSectionHeaderView.m */,
+				F1BE1ACF1E3451E6007E9EA3 /* AccountListSectionHeaderView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -840,6 +862,16 @@
 				F148C0391E2B6D0E00274C9A /* POPLabel.m */,
 			);
 			path = PanelOPUI;
+			sourceTree = "<group>";
+		};
+		F1F7140B1E339CB500624DF6 /* MGFashionMenuView */ = {
+			isa = PBXGroup;
+			children = (
+				F1F7140C1E339CB500624DF6 /* LICENSE */,
+				F1F7140D1E339CB500624DF6 /* MGFashionMenuView.h */,
+				F1F7140E1E339CB500624DF6 /* MGFashionMenuView.m */,
+			);
+			path = MGFashionMenuView;
 			sourceTree = "<group>";
 		};
 		FAB556BC691A835FF4EC21F9 /* Pods */ = {
@@ -915,8 +947,11 @@
 			files = (
 				F1EF86251E26780300229740 /* AddAccountView.xib in Resources */,
 				F1D15D871E32F82F00BEF16B /* js in Resources */,
+				F1BE1AD01E3451E6007E9EA3 /* AccountListSectionHeaderView.xib in Resources */,
+				F1BE1ACA1E343B75007E9EA3 /* AccountListCell.xib in Resources */,
 				F1D15D841E32F82300BEF16B /* echarts.html in Resources */,
 				F148C0371E2B6CC300274C9A /* CategoryCell.xib in Resources */,
+				F1F7140F1E339CB500624DF6 /* LICENSE in Resources */,
 				F1EF860C1E2670C600229740 /* Assets.xcassets in Resources */,
 				F148C02C1E2B681B00274C9A /* Default@2x.png in Resources */,
 				F16EADCD1E31EC1E00F70CEF /* DateSelectView.xib in Resources */,
@@ -982,6 +1017,7 @@
 			files = (
 				F16EADB81E31E7BF00F70CEF /* YSLScrollMenuView.m in Sources */,
 				F13CAFCC1E320FA90025A874 /* WhaterProgress.m in Sources */,
+				F1F714101E339CB500624DF6 /* MGFashionMenuView.m in Sources */,
 				F13CAFA91E320FA90025A874 /* PYGrid.m in Sources */,
 				F148C0231E2B651600274C9A /* UIView+Convenience.m in Sources */,
 				F13CAFBE1E320FA90025A874 /* PYToolboxFeature.m in Sources */,
@@ -1046,6 +1082,7 @@
 				F13CAFA21E320FA90025A874 /* PYAxisPointer.m in Sources */,
 				F1D15D8A1E32FB4600BEF16B /* AccountStatisticsModel.m in Sources */,
 				F148BFF71E2B60A500274C9A /* MDLinearProgressLayer.m in Sources */,
+				F1BE1ACE1E3451DE007E9EA3 /* AccountListSectionHeaderView.m in Sources */,
 				F13CAFB71E320FA90025A874 /* PYRoamController.m in Sources */,
 				F13CAFCB1E320FA90025A874 /* SXViewAdditions.m in Sources */,
 				F13CAFA31E320FA90025A874 /* PYAxisSplitLine.m in Sources */,
@@ -1056,6 +1093,7 @@
 				F1EF861D1E26724600229740 /* MainTabBarVC.m in Sources */,
 				F148C0081E2B60A500274C9A /* MDTimePickerDialog.m in Sources */,
 				F16EADC21E31E87E00F70CEF /* AccountViewmodel.m in Sources */,
+				F1BE1AC91E343B75007E9EA3 /* AccountListCell.m in Sources */,
 				F148BFF31E2B60A500274C9A /* MDCollectionViewCell.m in Sources */,
 				F148C0041E2B60A500274C9A /* MDTabBar.m in Sources */,
 				F1EF86341E267C4300229740 /* AddAccountView.m in Sources */,

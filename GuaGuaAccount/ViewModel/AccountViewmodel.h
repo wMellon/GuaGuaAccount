@@ -13,6 +13,8 @@ enum{
     TypeIncome = 1   //收入
 };
 
+#define timeFormat @"yyyy-MM-dd HH:mm:ss"
+
 @interface AccountViewmodel : NSObject
 
 +(NSMutableArray*)getPayOutCategorys;
@@ -21,14 +23,21 @@ enum{
 /**
  获取剩下money
  获取最新一次薪资以来，收入-支出剩下的钱
- @return
  */
 +(void)getLastLeftMoneyWithBlock:(void(^)(NSString*leftCount,NSString*consumeCount))block;
 
 /**
  获取收入几条，按类别统计
 
- @return 
+ @return array
  */
 +(NSMutableArray*)getAccountByCategory;
+
+
+/**
+ 获取消费数据
+
+ @return array
+ */
++(NSMutableArray*)getAccountList;
 @end

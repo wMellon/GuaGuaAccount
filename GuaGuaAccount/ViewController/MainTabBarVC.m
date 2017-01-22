@@ -49,6 +49,11 @@
 
 #pragma mark - View delegate
 
+//- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item{
+//    if(viewController == _addVC){
+//        [_addVC refreshAni];
+//    }
+//}
 
 #pragma mark - Other delegate
 

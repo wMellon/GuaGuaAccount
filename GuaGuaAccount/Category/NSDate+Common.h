@@ -12,4 +12,33 @@
 
 -(NSString *)formattedTimeWithFormat:(NSString *)dateFormat;
 
+/**
+ 字符串转日期
+
+ @param dateString 字符串
+ @param formatter 字符串格式
+ @return 日期
+ */
++(NSDate*) convertDateFromString:(NSString*)dateString andFormat:(NSString*)formatter;
+
+/**
+ 获取年份
+
+ @return 年
+ */
+- (NSInteger) year;
+
+/**
+ 获取月份
+
+ @return 月
+ */
+- (NSInteger) month;
+
+/**
+ 获取周几
+
+ @return 几
+ */
+- (NSInteger) weekday;
 @end

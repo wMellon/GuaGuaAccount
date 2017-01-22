@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PYEchartsView.h"
 
 @interface PieChartVC : UIViewController
+
+@property(nonatomic, strong) PYEchartsView *kEchartView;
 
 @end

@@ -11,11 +11,9 @@
 #import "PYOption.h"
 #import "AccountViewmodel.h"
 #import "AccountStatisticsModel.h"
-#import "PYEchartsView.h"
 
 @interface PieChartVC ()
 
-@property(nonatomic, strong) PYEchartsView *kEchartView;
 @property(nonatomic, strong) NSMutableArray *accountList;
 
 @end
@@ -33,7 +31,6 @@
     [self.view addSubview:self.kEchartView];
     [self reloadViewData];
     [self showBasicPieDemo];
-    [self.kEchartView loadEcharts];
 }
 
 - (void)reloadViewData{

@@ -30,7 +30,8 @@
 }
 
 - (void)setupContentView{
-    YSLContainerViewController *containerVC = [[YSLContainerViewController alloc]initWithControllers:@[self.listVC,self.pieVC,self.waveVC] topBarHeight:20 parentViewController:self];
+    YSLContainerViewController *containerVC = [[YSLContainerViewController alloc]initWithControllers:@[self.listVC,self.pieVC,self.waveVC] topBarHeight:20 viewHeight:self.view.frameHeight-48 parentViewController:self];
+//    containerVC.view.frameHeight -= 48; //减去48
     containerVC.delegate = self;
     containerVC.menuItemFont = [UIFont fontWithName:@"Futura-Medium" size:16];
     [self.view addSubview:containerVC.view];
@@ -39,7 +40,9 @@
 #pragma mark - View delegate
 
 - (void)containerViewItemIndex:(NSInteger)index currentController:(UIViewController *)controller{
-    
+    if(controller == self.pieVC){
+        [self.pieVC.kEchartView loadEcharts];
+    }
 }
 
 

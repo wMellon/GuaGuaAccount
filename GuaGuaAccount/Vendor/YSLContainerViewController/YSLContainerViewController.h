@@ -30,6 +30,7 @@
 
 - (id)initWithControllers:(NSArray *)controllers
              topBarHeight:(CGFloat)topBarHeight
+               viewHeight:(CGFloat)viewHeight
      parentViewController:(UIViewController *)parentViewController;
 
 @end

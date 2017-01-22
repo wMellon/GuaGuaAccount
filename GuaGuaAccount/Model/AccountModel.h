@@ -18,4 +18,6 @@
 @property(nonatomic, copy) NSString *remark;
 @property(nonatomic, copy) NSString *accountType;//类型：支出0，收入1
 
+//以下用于界面显示
+@property(nonatomic, copy) NSString *timeText;//日期显示
 @end

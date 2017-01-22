@@ -18,28 +18,48 @@
                 <rect key="frame" x="0.0" y="0.0" width="178" height="112"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="khF-t0-WUo" customClass="POPLabel">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pLs-NQ-yNs" customClass="POPView">
                         <rect key="frame" x="0.0" y="0.0" width="178" height="112"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="khF-t0-WUo" customClass="POPLabel">
+                                <rect key="frame" x="0.0" y="0.0" width="178" height="112"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="khF-t0-WUo" secondAttribute="trailing" id="1Ox-2p-dAz"/>
+                            <constraint firstItem="khF-t0-WUo" firstAttribute="top" secondItem="pLs-NQ-yNs" secondAttribute="top" id="KEo-bC-XNC"/>
+                            <constraint firstAttribute="bottom" secondItem="khF-t0-WUo" secondAttribute="bottom" id="q86-FV-2eq"/>
+                            <constraint firstItem="khF-t0-WUo" firstAttribute="leading" secondItem="pLs-NQ-yNs" secondAttribute="leading" id="yEr-oi-cQG"/>
+                        </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                <real key="value" value="1"/>
+                                <real key="value" value="0.0"/>
                             </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
-                    </label>
+                    </view>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="khF-t0-WUo" secondAttribute="trailing" id="8JN-fe-zpw"/>
-                <constraint firstItem="khF-t0-WUo" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="gYE-VQ-x8S"/>
-                <constraint firstAttribute="bottom" secondItem="khF-t0-WUo" secondAttribute="bottom" id="i5c-Zj-CLv"/>
-                <constraint firstItem="khF-t0-WUo" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="nOu-jt-9te"/>
+                <constraint firstAttribute="trailing" secondItem="pLs-NQ-yNs" secondAttribute="trailing" id="5XA-N8-Nm4"/>
+                <constraint firstItem="pLs-NQ-yNs" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6gs-50-ZXU"/>
+                <constraint firstItem="pLs-NQ-yNs" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="KGG-7R-9Mv"/>
+                <constraint firstAttribute="bottom" secondItem="pLs-NQ-yNs" secondAttribute="bottom" id="naf-ud-Erf"/>
             </constraints>
             <size key="customSize" width="178" height="112"/>
             <connections>

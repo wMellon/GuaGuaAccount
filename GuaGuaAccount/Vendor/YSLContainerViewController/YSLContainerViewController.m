@@ -14,6 +14,7 @@ static const CGFloat kYSLScrollMenuViewHeight = 40;
 @interface YSLContainerViewController () <UIScrollViewDelegate, YSLScrollMenuViewDelegate>
 
 @property (nonatomic, assign) CGFloat topBarHeight;
+@property (nonatomic, assign) CGFloat viewHeight;
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, strong) YSLScrollMenuView *menuView;
 
@@ -23,6 +24,7 @@ static const CGFloat kYSLScrollMenuViewHeight = 40;
 
 - (id)initWithControllers:(NSArray *)controllers
              topBarHeight:(CGFloat)topBarHeight
+               viewHeight:(CGFloat)viewHeight 
      parentViewController:(UIViewController *)parentViewController
 {
     self = [super init];
@@ -32,6 +34,7 @@ static const CGFloat kYSLScrollMenuViewHeight = 40;
         [self didMoveToParentViewController:parentViewController];
         
         _topBarHeight = topBarHeight;
+        _viewHeight = viewHeight;
         _titles = [[NSMutableArray alloc] init];
         _childControllers = [[NSMutableArray alloc] init];
         _childControllers = [controllers mutableCopy];
@@ -58,7 +61,7 @@ static const CGFloat kYSLScrollMenuViewHeight = 40;
     
     // ContentScrollview setup
     _contentScrollView = [[UIScrollView alloc]init];
-    _contentScrollView.frame = CGRectMake(0,_topBarHeight + kYSLScrollMenuViewHeight, self.view.frame.size.width, self.view.frame.size.height - (_topBarHeight + kYSLScrollMenuViewHeight));
+    _contentScrollView.frame = CGRectMake(0,_topBarHeight + kYSLScrollMenuViewHeight, self.view.frame.size.width, _viewHeight - (_topBarHeight + kYSLScrollMenuViewHeight));
     _contentScrollView.backgroundColor = [UIColor clearColor];
     _contentScrollView.pagingEnabled = YES;
     _contentScrollView.delegate = self;

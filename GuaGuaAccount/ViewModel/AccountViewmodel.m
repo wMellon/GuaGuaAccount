@@ -103,4 +103,120 @@
     return [AccountStatisticsModel searchWithSQL:sql];
 }
 
++(NSMutableArray*)getAccountList{
+    NSMutableArray *array = [AccountModel searchWithWhere:[NSString stringWithFormat:@"accountType = '%@'", enumToString(TypePayOut)] orderBy:@"time desc" offset:0 count:0];
+    //按月份分开
+    NSDate *now = [NSDate date];
+    NSString *temp = [NSString stringWithFormat:@"%@-01 00:00:00", [[now formattedTimeWithFormat:timeFormat] substringToIndex:7]];
+    NSMutableArray *arrays = [[NSMutableArray alloc] init];
+    NSMutableArray *models = [[NSMutableArray alloc] init];
+    for(AccountModel *model in array){
+        //算出日期显示部分
+        model.timeText = [self getDate:model.time];
+        if([model.time compare:temp] >= 0){
+            [models addObject:model];
+        }else{
+            //已经是上个月了
+            temp = [self getLastMonth:temp];
+            [arrays addObject:models];
+            models = [[NSMutableArray alloc] init];
+            [models addObject:model];
+        }
+    }
+    if(models.count > 0){
+        [arrays addObject:models];
+    }
+    return arrays;
+}
+
+
++(NSString*)getDate:(NSString*)timeStr{
+    //2016-03-02 00:00:00 zzz
+    NSRange range = [timeStr rangeOfString:@"^[0-9]{4}(-[0-9]{2}){2} ([0-9]{2}:){2}[0-9]{2}$" options:NSRegularExpressionSearch];
+    if(range.location == NSNotFound){
+        //不符合格式不做处理
+        return nil;
+    }
+    
+    NSString *sourceTimeStr = timeStr;
+    NSDateFormatter *dateFmt = [[NSDateFormatter alloc]init];
+    dateFmt.dateFormat = timeFormat;
+    NSDate *souceTime = [dateFmt dateFromString:sourceTimeStr];
+    //取日期比较就好
+    timeStr = [NSString stringWithFormat:@"%@ 00:00:00", [timeStr substringToIndex:10]];
+    NSDate *date = [NSDate convertDateFromString:timeStr andFormat:timeFormat];
+    NSString *nowStr = [NSString stringWithFormat:@"%@ 00:00:00", [[[NSDate date] formattedTimeWithFormat:timeFormat] substringToIndex:10]];
+    NSDate *now = [NSDate convertDateFromString:nowStr andFormat:timeFormat];
+    NSTimeInterval secondsInterval = [now timeIntervalSinceDate:date];
+    if(secondsInterval == 0){
+        //今天
+        NSRange range = NSMakeRange(11, 5);
+        return [NSString stringWithFormat:@"今天\r\n%@", [sourceTimeStr substringWithRange:range]];
+    }else if(secondsInterval == 24 * 60 * 60){
+        //昨天
+        NSRange range = NSMakeRange(11, 5);
+        return [NSString stringWithFormat:@"昨天\r\n%@", [sourceTimeStr substringWithRange:range]];
+    }else{
+        //周几
+        NSString *weekDayStr;
+        switch (souceTime.weekday) {
+            case 1:
+                weekDayStr = @"周日";
+                break;
+            case 2:
+                weekDayStr = @"周一";
+                break;
+            case 3:
+                weekDayStr = @"周二";
+                break;
+            case 4:
+                weekDayStr = @"周三";
+                break;
+            case 5:
+                weekDayStr = @"周四";
+                break;
+            case 6:
+                weekDayStr = @"周五";
+                break;
+            case 7:
+                weekDayStr = @"周六";
+                break;
+            default:
+                weekDayStr = @"";
+                break;
+        }
+        NSRange range = NSMakeRange(5, 5);
+        return [NSString stringWithFormat:@"%@\r\n%@", weekDayStr, [sourceTimeStr substringWithRange:range]];
+    }
+}
+
+
+/**
+ 获取上个月的该日期
+
+ @param dateString 2017-01-01
+ @return 2016-12-01
+ */
++(NSString*)getLastMonth:(NSString*)dateString{
+    NSString *suffix = [dateString substringFromIndex:7];
+    NSDate *date = [NSDate convertDateFromString:dateString andFormat:timeFormat];
+    NSInteger year = date.year;
+    NSInteger month = date.month;
+    NSString *monthStr;
+    NSString *result = @"";
+    if(month == 1){
+        year -= 1;
+        month = 12;
+    }else{
+        month -= 1;
+    }
+    //处理月份显示
+    if(month < 10){
+        monthStr = [NSString stringWithFormat:@"0%ld", (long)month];
+    }else{
+        monthStr = [NSString stringWithFormat:@"%ld", (long)month];
+    }
+    result = [result stringByAppendingString:[NSString stringWithFormat:@"%ld-%@%@", (long)year, monthStr, suffix]];
+    return result;
+}
 @end
