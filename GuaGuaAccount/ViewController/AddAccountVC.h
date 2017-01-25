@@ -10,9 +10,4 @@
 
 @interface AddAccountVC : UIViewController
 
-/**
- 刷新动画
- */
--(void)refreshAni;
-
 @end

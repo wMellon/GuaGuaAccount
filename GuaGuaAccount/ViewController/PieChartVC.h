@@ -13,4 +13,5 @@
 
 @property(nonatomic, strong) PYEchartsView *kEchartView;
 
+- (void)reloadViewData;
 @end

@@ -9,7 +9,9 @@
 #import "AppDelegate.h"
 #import "MainTabBarVC.h"
 
-@interface AppDelegate ()
+@interface AppDelegate ()<UITabBarControllerDelegate>
+
+@property(nonatomic, strong) MainTabBarVC *mainVC;
 
 @end
 
@@ -17,10 +19,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    MainTabBarVC *mainVC = [[MainTabBarVC alloc] init];
+    self.mainVC = [[MainTabBarVC alloc] init];
+    self.mainVC.delegate = self;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = mainVC;
+    self.window.rootViewController = self.mainVC;
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -52,5 +55,12 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - delegate
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
+    if(viewController == self.mainVC.historyVC){
+        [self.mainVC.historyVC reloadData];
+    }
+}
 
 @end

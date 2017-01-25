@@ -9,6 +9,7 @@ target 'GuaGuaAccount' do
 
 pod 'LKDBHelper'#sqlite ORM
 pod 'YYModel'
+pod 'SDAutoLayout'
 
 use_frameworks!
 

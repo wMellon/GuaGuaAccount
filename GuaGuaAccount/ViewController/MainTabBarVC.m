@@ -7,14 +7,9 @@
 //
 
 #import "MainTabBarVC.h"
-#import "AddAccountVC.h"
-#import "AccountHistoryVC.h"
 #import "LKDBUtils.h"
 
 @interface MainTabBarVC ()
-
-@property(nonatomic, strong) AddAccountVC *addVC;
-@property(nonatomic, strong) AccountHistoryVC *historyVC;
 
 @end
 

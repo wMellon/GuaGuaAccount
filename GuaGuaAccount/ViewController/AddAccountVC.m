@@ -37,10 +37,17 @@
     [self reloadViewData];
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    if(self.addAccountView.menuView.isHidden){
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if(self.addAccountView.menuView){
         [self.addAccountView.menuView show];
+    }
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    if(self.addAccountView.menuView){
+        [self.addAccountView.menuView hide];
     }
 }
 
@@ -198,17 +205,6 @@
     [self.addAccountView.categoryCollectionView reloadData];
     [self reloadCategory];
     [self reloadLeftMoney];
-}
-
-
-/**
- 刷新动画
- */
--(void)refreshAni{
-    if(self.addAccountView.menuView.isShown){
-        [self.addAccountView.menuView hide];
-    }
-    [self.addAccountView.menuView show];
 }
 
 #pragma mark - Properrtys

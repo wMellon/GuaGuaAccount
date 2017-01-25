@@ -10,4 +10,9 @@
 
 @interface DateSelectView : UIView
 
+@property (strong, nonatomic) UILabel *dateLabel;
+@property (strong, nonatomic) UIButton *lastBtn;
+@property (strong, nonatomic) UIButton *nextBtn;
+
+
 @end

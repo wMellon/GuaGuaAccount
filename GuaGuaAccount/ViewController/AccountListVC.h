@@ -10,4 +10,6 @@
 
 @interface AccountListVC : UIViewController
 
+- (void)reloadViewData;
+
 @end

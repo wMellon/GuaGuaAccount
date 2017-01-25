@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AddAccountVC.h"
+#import "AccountHistoryVC.h"
 
 @interface MainTabBarVC : UITabBarController
+
+@property(nonatomic, strong) AddAccountVC *addVC;
+@property(nonatomic, strong) AccountHistoryVC *historyVC;
 
 @end

@@ -219,4 +219,94 @@
     result = [result stringByAppendingString:[NSString stringWithFormat:@"%ld-%@%@", (long)year, monthStr, suffix]];
     return result;
 }
+
+/**
+ 根据日期获取一个月内的消费
+
+ @param dateString 有特殊格式的
+ @return 数组
+ */
++(NSMutableArray*)getAccountByDate:(NSString*)dateString{
+    NSString *temp = [dateString stringByReplacingOccurrencesOfString:@"年" withString:@"-"];
+    temp = [temp stringByReplacingOccurrencesOfString:@"月" withString:@"-"];
+    NSString *str1 = [temp stringByAppendingString:@"01 00:00:00"];
+    NSString *str2 = [[self getSelectDateBy:temp monthOffset:1] stringByAppendingString:@"01 00:00:00"];
+    NSString *sql = [NSString stringWithFormat:@"SELECT *,sum(price) priceCount FROM Account WHERE time >= '%@' AND time < '%@' AND accountType = '%@' GROUP BY categoryId ORDER BY time DESC", str1, str2, enumToString(TypePayOut)];
+    return [AccountStatisticsModel searchWithSQL:sql];
+}
+
+/**
+ 根据日期选择的格式来返回上/下个月的日期字符串，带有回调，并且有指示日期正常与否
+ 
+ @param dateString 字符串
+ */
++(void)getSelectDateBy:(NSString*)dateString monthOffset:(NSInteger)offset block:(void(^)(BOOL canNext, NSString *dateString))callBack{
+    NSDate *now = [NSDate date];
+    NSInteger nowYear = now.year;
+    NSInteger nowMonth = now.month;
+    NSInteger year = [[dateString substringToIndex:4] integerValue];
+    NSInteger month = [[dateString substringWithRange:NSMakeRange(5, 2)] integerValue];
+    NSString *monthStr;
+    //年
+    if(month == 1 && offset < 0){
+        year = year - 1;
+    }else if(month == 12 && offset > 0){
+        year = year + 1;
+    }
+    //月
+    month = month + offset;
+    if(month > 12){
+        month = 1;
+    }else if(month < 1){
+        month = 12;
+    }
+    BOOL canNext = YES;
+    if(year >= nowYear ||
+       (year >= nowYear && month >= nowMonth)){
+        //超过当前时间，返回原字符串
+        canNext = NO;
+    }
+    //处理月份显示
+    if(month < 10){
+        monthStr = [NSString stringWithFormat:@"0%ld", (long)month];
+    }else{
+        monthStr = [NSString stringWithFormat:@"%ld", (long)month];
+    }
+    NSString *result = [NSString stringWithFormat:@"%ld年%@月", year, monthStr];
+    callBack(canNext, result);
+}
+
+
+/**
+ 根据日期选择的格式来返回上/下个月的日期字符串
+
+ @param dateString 字符串
+ @param offset 偏移量
+ @return 上/下月的字符串
+ */
++(NSString*)getSelectDateBy:(NSString*)dateString monthOffset:(NSInteger)offset{
+    NSInteger year = [[dateString substringToIndex:4] integerValue];
+    NSInteger month = [[dateString substringWithRange:NSMakeRange(5, 2)] integerValue];
+    NSString *monthStr;
+    //年
+    if(month == 1 && offset < 0){
+        year = year - 1;
+    }else if(month == 12 && offset > 0){
+        year = year + 1;
+    }
+    //月
+    month = month + offset;
+    if(month > 12){
+        month = 1;
+    }else if(month < 1){
+        month = 12;
+    }
+    //处理月份显示
+    if(month < 10){
+        monthStr = [NSString stringWithFormat:@"0%ld", (long)month];
+    }else{
+        monthStr = [NSString stringWithFormat:@"%ld", (long)month];
+    }
+    return [NSString stringWithFormat:@"%ld-%@-", year, monthStr];
+}
 @end

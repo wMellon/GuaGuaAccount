@@ -10,4 +10,9 @@
 
 @interface AccountHistoryVC : UIViewController
 
+/**
+ 重新加载数据
+ */
+-(void)reloadData;
+
 @end

@@ -51,6 +51,10 @@
 
 #pragma mark - Action
 
+-(void)reloadData{
+    [self.listVC reloadViewData];
+    [self.pieVC reloadViewData];
+}
 
 #pragma mark - Properrtys
 

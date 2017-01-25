@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SDAutoLayout.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>YYModel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,12 +37,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6ABA65DD9318088B0C4FF265B492353D</key>
+		<key>5E17551DE27FCA6746189DEEA23D950F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>94094E49295CFD5A6A95E18DA2F4BB43</key>
+		<key>867416C44EE7DFEF457E4380E2604DF1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7EBE8F2E4E610E1CE9EC61FD775C4B6</key>
 		<dict>
 			<key>primary</key>
 			<true/>

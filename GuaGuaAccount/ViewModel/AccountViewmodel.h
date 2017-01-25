@@ -14,6 +14,7 @@ enum{
 };
 
 #define timeFormat @"yyyy-MM-dd HH:mm:ss"
+#define DateSelectFormat @"yyyy年MM月"
 
 @interface AccountViewmodel : NSObject
 
@@ -40,4 +41,19 @@ enum{
  @return array
  */
 +(NSMutableArray*)getAccountList;
+
+/**
+ 根据日期获取一个月内的消费
+ 
+ @param dateString 有特殊格式的
+ @return 数组
+ */
++(NSMutableArray*)getAccountByDate:(NSString*)dateString;
+
+/**
+ 根据日期选择的格式来返回上/下个月的日期字符串
+
+ @param dateString 字符串
+ */
++(void)getSelectDateBy:(NSString*)dateString monthOffset:(NSInteger)offset block:(void(^)(BOOL canNext, NSString *dateString))callBack;
 @end
