@@ -56,4 +56,13 @@ enum{
  @param dateString 字符串
  */
 +(void)getSelectDateBy:(NSString*)dateString monthOffset:(NSInteger)offset block:(void(^)(BOOL canNext, NSString *dateString))callBack;
+
+/**
+ 从起始日期到结束日期按照月份、类别分组获取数据
+
+ @param from 起始日期
+ @param to 结束日期
+ */
++(NSMutableArray*)getAccountListGBMonthCategoryFrom:(NSString*)from to:(NSString*)to;
+
 @end

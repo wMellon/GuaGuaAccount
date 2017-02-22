@@ -41,4 +41,23 @@
  @return 几
  */
 - (NSInteger) weekday;
+
+/**
+ 根据偏移量算出偏移到了几月份
+
+ @param currentMonth 当前月份
+ @param offset 偏移量
+ @return 求出的月份
+ */
+-(NSInteger)getMonthByOffset:(NSInteger)offset;
+
+/**
+ 根据偏移量算出偏移到了第几年
+
+ @param currentYear 当年
+ @param currentMonth 当前月份
+ @param offset 偏移量
+ @return 求出的年份
+ */
+-(NSInteger)getYearByOffset:(NSInteger)offset;
 @end

@@ -309,4 +309,34 @@
     }
     return [NSString stringWithFormat:@"%ld-%@-", year, monthStr];
 }
+
++(void)getByYear:(NSInteger)year month:(NSInteger)month offset:(NSInteger)offset block:(void(^)(NSInteger year, NSInteger month, NSString *monthStr))callBack{
+    NSString *monthStr;
+    //年
+    if(month == 1 && offset < 0){
+        year = year - ceil(offset / 12);
+    }else if(month == 12 && offset > 0){
+        year = year + ceil(offset / 12);
+    }
+    //月
+    month = month + offset;
+    if(month > 12){
+        month = 1;
+    }else if(month < 1){
+        month = 12;
+    }
+    //处理月份显示
+    if(month < 10){
+        monthStr = [NSString stringWithFormat:@"0%ld", (long)month];
+    }else{
+        monthStr = [NSString stringWithFormat:@"%ld", (long)month];
+    }
+}
+
+#pragma mark -从起始日期到结束日期按照月份、类别分组获取数据
+
++(NSMutableArray*)getAccountListGBMonthCategoryFrom:(NSString*)from to:(NSString*)to{
+    NSString *sql = [NSString stringWithFormat:@"SELECT *,sum(price) priceCount FROM Account WHERE time >= '%@' AND time < '%@' AND accountType = '%@' GROUP BY categoryId,month ORDER BY month,categoryId DESC", from, to, enumToString(TypePayOut)];
+    return [AccountStatisticsModel searchWithSQL:sql];
+}
 @end

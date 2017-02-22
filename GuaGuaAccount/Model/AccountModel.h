@@ -12,6 +12,7 @@
 
 @property(nonatomic, copy) NSString *accountId;
 @property(nonatomic, copy) NSString *time;
+@property(nonatomic, copy) NSString *month;//月份:timeFormat到月份为止
 @property(nonatomic, copy) NSString *categoryId;
 @property(nonatomic, copy) NSString *categoryName;
 @property(nonatomic, copy) NSString *price;

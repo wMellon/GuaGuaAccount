@@ -15,5 +15,6 @@
 @property(nonatomic, copy) NSString *categoryName;
 @property(nonatomic, copy) NSString *priceCount;
 @property(nonatomic, copy) NSString *accountType;//类型：支出0，收入1
+@property(nonatomic, copy) NSString *month;
 
 @end
