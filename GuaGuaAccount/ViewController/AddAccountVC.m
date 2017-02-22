@@ -16,7 +16,7 @@
 #define NumOfEachSection 4  //每行4个
 #define HorizontalOffset 5 //水平间距
 
-@interface AddAccountVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UITextFieldDelegate>{
+@interface AddAccountVC ()<UICollectionViewDelegate,UICollectionViewDataSource>{
     NSInteger _accountType;
 }
 
@@ -149,7 +149,8 @@
 
 #pragma mark - View delegate
 
-- (void)textFieldDidEndEditing:(UITextField *)textField{
+- (void)priceChg:(id)sender{
+    UITextField *textField = (UITextField*)sender;
     self.accountModel.price = textField.text;
 }
 
@@ -216,7 +217,7 @@
         _addAccountView.categoryCollectionView.dataSource = self;
 //        _addAccountView.categoryCollectionView.collectionViewLayout.
         [_addAccountView.categoryCollectionView registerNib:[UINib nibWithNibName:@"CategoryCell" bundle:nil] forCellWithReuseIdentifier:@"Category"];
-        _addAccountView.moneyTextField.delegate = self;
+        [_addAccountView.moneyTextField addTarget:self action:@selector(priceChg:) forControlEvents:UIControlEventEditingChanged];
         [_addAccountView.typeBtn addTarget:self action:@selector(typeChg:) forControlEvents:UIControlEventTouchUpInside];
         [_addAccountView.saveBtn addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
     }

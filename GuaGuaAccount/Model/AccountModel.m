@@ -17,7 +17,7 @@
         CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
         _accountId = [[NSString stringWithFormat:@"%@", uuidStr] stringByReplacingOccurrencesOfString:@"-" withString:@""];
         _time = [[NSDate date] formattedTimeWithFormat:@"yyyy-MM-dd HH:mm:ss"];
-        _month = [_time substringToIndex:6];
+        _month = [_time substringToIndex:7];
     }
     return self;
 }

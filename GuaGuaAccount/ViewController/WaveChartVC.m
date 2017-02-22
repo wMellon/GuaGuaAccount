@@ -148,7 +148,6 @@
     NSData *jsonData = [basicPieJson dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:nil];
     PYOption *option = [RMMapper objectWithClass:[PYOption class] fromDictionary:jsonDic];
-    NSString *s = [PYJsonUtil getJSONString:option];
     [_kEchartView setOption:option];
 }
 
