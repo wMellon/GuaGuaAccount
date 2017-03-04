@@ -1,14 +1,14 @@
 //
-//  DateSelectView.m
+//  WaveDateSelectView.m
 //  GuaGuaAccount
 //
-//  Created by xxb on 17/1/20.
+//  Created by xxb on 17/3/4.
 //  Copyright © 2017年 xxb. All rights reserved.
 //
 
-#import "DateSelectView.h"
+#import "WaveDateSelectView.h"
 
-@implementation DateSelectView
+@implementation WaveDateSelectView
 
 -(id)init{
     self = [super init];
@@ -37,13 +37,15 @@
     [self addSubview:_dateLabel];
     
     _lastBtn = [[UIButton alloc] init];
-    [_lastBtn setTitle:@"<" forState:UIControlStateNormal];
+    [_lastBtn setTitle:@"前6月" forState:UIControlStateNormal];
     [_lastBtn setTitleColor:RGB(153, 153, 153) forState:UIControlStateNormal];
+    [_lastBtn setTitleColor:RGB(230, 230, 230) forState:UIControlStateDisabled];
     [self addSubview:_lastBtn];
     
     _nextBtn = [[UIButton alloc] init];
-    [_nextBtn setTitle:@">" forState:UIControlStateNormal];
+    [_nextBtn setTitle:@"后6月" forState:UIControlStateNormal];
     [_nextBtn setTitleColor:RGB(153, 153, 153) forState:UIControlStateNormal];
+    [_nextBtn setTitleColor:RGB(230, 230, 230) forState:UIControlStateDisabled];
     [self addSubview:_nextBtn];
 }
 
@@ -58,12 +60,13 @@
     .rightSpaceToView(_dateLabel, 10)
     .centerYEqualToView(_dateLabel)
     .heightIs(15)
-    .widthIs(15);
+    .widthIs(60);
     
     _nextBtn.sd_layout
     .leftSpaceToView(_dateLabel, 10)
     .centerYEqualToView(_dateLabel)
     .heightIs(15)
-    .widthIs(15);
+    .widthIs(60);
 }
+
 @end

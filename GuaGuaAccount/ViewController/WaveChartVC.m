@@ -7,7 +7,7 @@
 //
 
 #import "WaveChartVC.h"
-#import "DateSelectView.h"
+#import "WaveDateSelectView.h"
 #import "AccountViewmodel.h"
 #import "PYOption.h"
 #import "RMMapper.h"
@@ -17,10 +17,12 @@
 
 @interface WaveChartVC ()
 
-@property (nonatomic, strong) DateSelectView *dateSelectView;
+@property (nonatomic, strong) WaveDateSelectView *dateSelectView;
 @property (nonatomic, strong) NSMutableArray *accountList;
-@property (nonatomic, copy) NSString *dateString;
 @property (nonatomic, strong) PYEchartsView *kEchartView;
+
+@property (nonatomic, strong) NSDate *getDataFromDate;//获取日期的开始时间
+@property (nonatomic, strong) NSDate *getDataToDate;//获取日期的结束时间
 
 @end
 
@@ -39,30 +41,18 @@
 
 - (void)reloadViewData{
     NSDate *now = [NSDate date];
-    NSString *to = [now formattedTimeWithFormat:timeFormat];
-    NSInteger fromMonth = [now getMonthByOffset:-6];
-    NSString *fromMonthStr;
-    if(fromMonth < 10){
-        fromMonthStr = [NSString stringWithFormat:@"0%ld", fromMonth];
-    }else{
-        fromMonthStr = [NSString stringWithFormat:@"%ld", fromMonth];
-    }
-    NSString *from = [NSString stringWithFormat:@"%ld-%@-01 00:00:00", [now getYearByOffset:-6], fromMonthStr];
+    NSDate *startDateOfDay = [now getFirstDateForThisMonth];
+    self.getDataToDate = startDateOfDay;
+    self.getDataFromDate = [startDateOfDay distanceByOffsetMonthes:-6];
     
     //获取数据
-    self.accountList = [AccountViewmodel getAccountListGBMonthCategoryFrom:from to:to];
+    self.accountList = [AccountViewmodel getAccountListGBMonthCategoryFrom:[self.getDataFromDate formattedTimeWithFormat:DateSelectFormat] to:[self.getDataToDate formattedTimeWithFormat:DateSelectFormat]];
     
-    self.dateString = [now formattedTimeWithFormat:DateSelectFormat];
-    self.dateSelectView.dateLabel.text = [now formattedTimeWithFormat:DateSelectFormat];
-    [self.dateSelectView.nextBtn setTitleColor:RGB(230, 230, 230) forState:UIControlStateNormal];
-    
+    self.dateSelectView.dateLabel.text = [NSString stringWithFormat:@"%@~%@", DateSelectShort([self.getDataFromDate formattedTimeWithFormat:DateSelectFormat]), DateSelectShort([self.getDataToDate formattedTimeWithFormat:DateSelectFormat])];
+    self.dateSelectView.nextBtn.enabled = NO;
     
     [self showBasicPieDemo];
     [self.kEchartView loadEcharts];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Action
@@ -102,13 +92,15 @@
         [seriesDict setObject:@{@"normal":@{}} forKey:@"areaStyle"];
         countArray = [[NSMutableArray alloc] init];
         for(NSString *month in dateArray){
-            [countArray addObject:monthDict[month]];
+            NSString *temp = monthDict[month];
+            if(temp.length <= 0){
+                temp = @"0";
+            }
+            [countArray addObject:temp];
         }
         [seriesDict setObject:countArray forKey:@"data"];
         [seriesArray addObject:seriesDict];
     }
-    
-    
     
     NSString *basicPieJson = @"{\"title\": {\
     \"text\": \"\"\
@@ -144,50 +136,45 @@
     ],\
     \"series\" : %@}";
     basicPieJson = [NSString stringWithFormat:basicPieJson ,[categoryNameArray yy_modelToJSONString] ,[dateArray yy_modelToJSONString], [seriesArray yy_modelToJSONString]];
-    basicPieJson = @"{\"title\": {    \"text\": \"\"    },    \"tooltip\" : {    \"trigger\": \"axis\"    },    \"legend\": {    \"data\":[\"零食\",\"护肤品\",\"衣服\",\"饮食\"]    },    \"toolbox\": {    \"feature\": {    \"saveAsImage\": {}    }    },    \"grid\": {    \"left\": \"3\",    \"right\": \"4\",    \"bottom\": \"3\",    \"containLabel\": true    },    \"xAxis\" : [    {    \"type\" : \"category\",    \"boundaryGap\" : false,    \"data\" : [\"2017-01\",\"2017-02\"]    }    ],    \"yAxis\" : [    {    \"type\" : \"value\"    }    ],    \"series\" : [{\"areaStyle\":{\"normal\":{}},\"data\":[\"642\",\"60\"],\"name\":\"零食\",\"type\":\"line\",\"stack\":\"总量\"},{\"areaStyle\":{\"normal\":{}},\"data\":[\"130\",\"30\"],\"name\":\"护肤品\",\"type\":\"line\",\"stack\":\"总量\"},{\"areaStyle\":{\"normal\":{}},\"data\":[\"23\",\"20\"],\"name\":\"衣服\",\"type\":\"line\",\"stack\":\"总量\"},{\"areaStyle\":{\"normal\":{}},\"data\":[\"34\",\"100\"],\"name\":\"饮食\",\"type\":\"line\",\"stack\":\"总量\"}]}";
     NSData *jsonData = [basicPieJson dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:nil];
     PYOption *option = [RMMapper objectWithClass:[PYOption class] fromDictionary:jsonDic];
     [_kEchartView setOption:option];
 }
 
--(void)lastMonth{
+-(void)lastSexMonth{
     GGWeakSelfDefine
-    [AccountViewmodel getSelectDateBy:self.dateString monthOffset:-1 block:^(BOOL canNext, NSString *dateString) {
-        GGWeakSelf.dateString = dateString;
-        GGWeakSelf.dateSelectView.dateLabel.text = dateString;
-        GGWeakSelf.accountList = [AccountViewmodel getAccountByDate:GGWeakSelf.dateString];
+    [AccountViewmodel getSelectDateBy:self.getDataFromDate monthOffset:-6 block:^(BOOL canNext, NSDate *date) {
+        GGWeakSelf.getDataToDate = GGWeakSelf.getDataFromDate;
+        GGWeakSelf.getDataFromDate = date;
+        GGWeakSelf.dateSelectView.dateLabel.text = [NSString stringWithFormat:@"%@~%@", DateSelectShort([self.getDataFromDate formattedTimeWithFormat:DateSelectFormat]), DateSelectShort([self.getDataToDate formattedTimeWithFormat:DateSelectFormat])];
+        GGWeakSelf.accountList = [AccountViewmodel getAccountListGBMonthCategoryFrom:[GGWeakSelf.getDataFromDate formattedTimeWithFormat:DateSelectFormat] to:[GGWeakSelf.getDataToDate formattedTimeWithFormat:DateSelectFormat]];
         [GGWeakSelf showBasicPieDemo];
         [GGWeakSelf.kEchartView loadEcharts];
-        [GGWeakSelf.dateSelectView.nextBtn setTitleColor:RGB(153, 153, 153) forState:UIControlStateNormal];
+        GGWeakSelf.dateSelectView.nextBtn.enabled = canNext;
     }];
 }
 
--(void)nextMonth{
+-(void)nextSexMonth{
     GGWeakSelfDefine
-    [AccountViewmodel getSelectDateBy:self.dateString monthOffset:1 block:^(BOOL canNext, NSString *dateString) {
-        GGWeakSelf.dateString = dateString;
-        GGWeakSelf.dateSelectView.dateLabel.text = dateString;
-        GGWeakSelf.accountList = [AccountViewmodel getAccountByDate:GGWeakSelf.dateString];
+    [AccountViewmodel getSelectDateBy:self.getDataToDate monthOffset:6 block:^(BOOL canNext, NSDate *date) {
+        GGWeakSelf.getDataFromDate = GGWeakSelf.getDataToDate;
+        GGWeakSelf.getDataToDate = date;
+        GGWeakSelf.dateSelectView.dateLabel.text = [NSString stringWithFormat:@"%@~%@", DateSelectShort([self.getDataFromDate formattedTimeWithFormat:DateSelectFormat]), DateSelectShort([self.getDataToDate formattedTimeWithFormat:DateSelectFormat])];
+        GGWeakSelf.accountList = [AccountViewmodel getAccountListGBMonthCategoryFrom:[GGWeakSelf.getDataFromDate formattedTimeWithFormat:DateSelectFormat] to:[GGWeakSelf.getDataToDate formattedTimeWithFormat:DateSelectFormat]];
         [GGWeakSelf showBasicPieDemo];
         [GGWeakSelf.kEchartView loadEcharts];
-        if(!canNext){
-            [GGWeakSelf.dateSelectView.nextBtn setTitleColor:RGB(230, 230, 230) forState:UIControlStateNormal];
-        }else{
-            [GGWeakSelf.dateSelectView.nextBtn setTitleColor:RGB(153, 153, 153) forState:UIControlStateNormal];
-        }
+        GGWeakSelf.dateSelectView.nextBtn.enabled = canNext;
     }];
 }
 
 #pragma mark - Properrtys
 
--(DateSelectView *)dateSelectView{
+-(WaveDateSelectView *)dateSelectView{
     if(!_dateSelectView){
-        _dateSelectView = [[DateSelectView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
-        [_dateSelectView.lastBtn addTarget:self action:@selector(lastMonth) forControlEvents:UIControlEventTouchUpInside];
-        [_dateSelectView.nextBtn addTarget:self action:@selector(nextMonth) forControlEvents:UIControlEventTouchUpInside];
-        [_dateSelectView.lastBtn setTitle:@"前7月" forState:UIControlStateNormal];
-        [_dateSelectView.nextBtn setTitle:@"后7月" forState:UIControlStateNormal];
+        _dateSelectView = [[WaveDateSelectView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
+        [_dateSelectView.lastBtn addTarget:self action:@selector(lastSexMonth) forControlEvents:UIControlEventTouchUpInside];
+        [_dateSelectView.nextBtn addTarget:self action:@selector(nextSexMonth) forControlEvents:UIControlEventTouchUpInside];
     }
     return _dateSelectView;
 }

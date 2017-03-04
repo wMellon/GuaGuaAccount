@@ -14,7 +14,7 @@ enum{
 };
 
 #define timeFormat @"yyyy-MM-dd HH:mm:ss"
-#define DateSelectFormat @"yyyy年MM月"
+#define DateSelectFormat @"yyyy-MM-dd"
 
 @interface AccountViewmodel : NSObject
 
@@ -51,11 +51,17 @@ enum{
 +(NSMutableArray*)getAccountByDate:(NSString*)dateString;
 
 /**
- 根据日期选择的格式来返回上/下个月的日期字符串
+ 根据日期选择的格式来返回上/下个月的日期字符串（字符串）
 
  @param dateString 字符串
  */
-+(void)getSelectDateBy:(NSString*)dateString monthOffset:(NSInteger)offset block:(void(^)(BOOL canNext, NSString *dateString))callBack;
++(void)getSelectDateStrBy:(NSString*)dateString monthOffset:(NSInteger)offset block:(void(^)(BOOL canNext, NSString *dateString))callBack;
+/**
+ 根据日期选择的格式来返回上/下个月的日期，带有回调，并且有指示日期正常与否
+ 
+ @param date DateSelectFormat格式，日期从1号00:00:00
+ */
++(void)getSelectDateBy:(NSDate*)date monthOffset:(NSInteger)offset block:(void(^)(BOOL canNext, NSDate *date))callBack;
 
 /**
  从起始日期到结束日期按照月份、类别分组获取数据

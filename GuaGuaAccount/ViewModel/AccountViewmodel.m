@@ -107,7 +107,7 @@
     NSMutableArray *array = [AccountModel searchWithWhere:[NSString stringWithFormat:@"accountType = '%@'", enumToString(TypePayOut)] orderBy:@"time desc" offset:0 count:0];
     //按月份分开
     NSDate *now = [NSDate date];
-    NSString *temp = [NSString stringWithFormat:@"%@-01 00:00:00", [[now formattedTimeWithFormat:timeFormat] substringToIndex:7]];
+    NSString *temp = [[now getFirstDateForThisMonth] formattedTimeWithFormat:timeFormat];
     NSMutableArray *arrays = [[NSMutableArray alloc] init];
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for(AccountModel *model in array){
@@ -118,7 +118,9 @@
         }else{
             //已经是上个月了
             temp = [self getLastMonth:temp];
-            [arrays addObject:models];
+            if(models.count > 0){
+                [arrays addObject:models];
+            }
             models = [[NSMutableArray alloc] init];
             [models addObject:model];
         }
@@ -198,26 +200,11 @@
  @return 2016-12-01
  */
 +(NSString*)getLastMonth:(NSString*)dateString{
-    NSString *suffix = [dateString substringFromIndex:7];
     NSDate *date = [NSDate convertDateFromString:dateString andFormat:timeFormat];
-    NSInteger year = date.year;
-    NSInteger month = date.month;
-    NSString *monthStr;
-    NSString *result = @"";
-    if(month == 1){
-        year -= 1;
-        month = 12;
-    }else{
-        month -= 1;
-    }
-    //处理月份显示
-    if(month < 10){
-        monthStr = [NSString stringWithFormat:@"0%ld", (long)month];
-    }else{
-        monthStr = [NSString stringWithFormat:@"%ld", (long)month];
-    }
-    result = [result stringByAppendingString:[NSString stringWithFormat:@"%ld-%@%@", (long)year, monthStr, suffix]];
-    return result;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay) fromDate:date];
+    [components setMonth:components.month - 1];
+    return [[calendar dateFromComponents:components] formattedTimeWithFormat:timeFormat];
 }
 
 /**
@@ -227,110 +214,48 @@
  @return 数组
  */
 +(NSMutableArray*)getAccountByDate:(NSString*)dateString{
-    NSString *temp = [dateString stringByReplacingOccurrencesOfString:@"年" withString:@"-"];
-    temp = [temp stringByReplacingOccurrencesOfString:@"月" withString:@"-"];
-    NSString *str1 = [temp stringByAppendingString:@"01 00:00:00"];
-    NSString *str2 = [[self getSelectDateBy:temp monthOffset:1] stringByAppendingString:@"01 00:00:00"];
-    NSString *sql = [NSString stringWithFormat:@"SELECT *,sum(price) priceCount FROM Account WHERE time >= '%@' AND time < '%@' AND accountType = '%@' GROUP BY categoryId ORDER BY time DESC", str1, str2, enumToString(TypePayOut)];
+    NSDate *date = [NSDate convertDateFromString:dateString andFormat:DateSelectFormat];
+    NSDate *startDateOfDay = [date getFirstDateForThisMonth];
+    NSString *fMonthDay = [startDateOfDay formattedTimeWithFormat:timeFormat];//当月的第一天
+    NSString *sMonthDay = [[startDateOfDay distanceByOffsetMonthes:1] formattedTimeWithFormat :timeFormat];//第二月的第一天
+    NSString *sql = [NSString stringWithFormat:@"SELECT *,sum(price) priceCount FROM Account WHERE time >= '%@' AND time < '%@' AND accountType = '%@' GROUP BY categoryId ORDER BY time DESC", fMonthDay, sMonthDay, enumToString(TypePayOut)];
     return [AccountStatisticsModel searchWithSQL:sql];
 }
 
 /**
  根据日期选择的格式来返回上/下个月的日期字符串，带有回调，并且有指示日期正常与否
  
- @param dateString 字符串
+ @param dateString DateSelectFormat格式，日期从1号00:00:00
  */
-+(void)getSelectDateBy:(NSString*)dateString monthOffset:(NSInteger)offset block:(void(^)(BOOL canNext, NSString *dateString))callBack{
++(void)getSelectDateStrBy:(NSString*)dateString monthOffset:(NSInteger)offset block:(void(^)(BOOL canNext, NSString *dateString))callBack{
+    //传进来的日期
+    NSDate *date = [NSDate convertDateFromString:dateString andFormat:DateSelectFormat];
+    //要返回的日期
+    NSDate *next1Date = [date distanceByOffsetMonthes:offset];
+    NSDate *next2Date = [date distanceByOffsetMonthes:offset + 1];
     NSDate *now = [NSDate date];
-    NSInteger nowYear = now.year;
-    NSInteger nowMonth = now.month;
-    NSInteger year = [[dateString substringToIndex:4] integerValue];
-    NSInteger month = [[dateString substringWithRange:NSMakeRange(5, 2)] integerValue];
-    NSString *monthStr;
-    //年
-    if(month == 1 && offset < 0){
-        year = year - 1;
-    }else if(month == 12 && offset > 0){
-        year = year + 1;
-    }
-    //月
-    month = month + offset;
-    if(month > 12){
-        month = 1;
-    }else if(month < 1){
-        month = 12;
-    }
     BOOL canNext = YES;
-    if(year >= nowYear ||
-       (year >= nowYear && month >= nowMonth)){
-        //超过当前时间，返回原字符串
+    if([next2Date timeIntervalSinceDate:now] > 0){
         canNext = NO;
     }
-    //处理月份显示
-    if(month < 10){
-        monthStr = [NSString stringWithFormat:@"0%ld", (long)month];
-    }else{
-        monthStr = [NSString stringWithFormat:@"%ld", (long)month];
-    }
-    NSString *result = [NSString stringWithFormat:@"%ld年%@月", year, monthStr];
-    callBack(canNext, result);
+    callBack(canNext, [next1Date formattedTimeWithFormat:DateSelectFormat]);
 }
-
 
 /**
- 根据日期选择的格式来返回上/下个月的日期字符串
-
- @param dateString 字符串
- @param offset 偏移量
- @return 上/下月的字符串
+ 根据日期选择的格式来返回上/下个月的日期字符串，带有回调，并且有指示日期正常与否
+ 
+ @param date DateSelectFormat格式，日期从1号00:00:00
  */
-+(NSString*)getSelectDateBy:(NSString*)dateString monthOffset:(NSInteger)offset{
-    NSInteger year = [[dateString substringToIndex:4] integerValue];
-    NSInteger month = [[dateString substringWithRange:NSMakeRange(5, 2)] integerValue];
-    NSString *monthStr;
-    //年
-    if(month == 1 && offset < 0){
-        year = year - 1;
-    }else if(month == 12 && offset > 0){
-        year = year + 1;
++(void)getSelectDateBy:(NSDate*)date monthOffset:(NSInteger)offset block:(void(^)(BOOL canNext, NSDate *date))callBack{
+    //要返回的日期
+    NSDate *next1Date = [date distanceByOffsetMonthes:offset];
+    NSDate *next2Date = [date distanceByOffsetMonthes:offset + 1];
+    NSDate *now = [NSDate date];
+    BOOL canNext = YES;
+    if([next2Date timeIntervalSinceDate:now] > 0){
+        canNext = NO;
     }
-    //月
-    month = month + offset;
-    if(month > 12){
-        month = 1;
-    }else if(month < 1){
-        month = 12;
-    }
-    //处理月份显示
-    if(month < 10){
-        monthStr = [NSString stringWithFormat:@"0%ld", (long)month];
-    }else{
-        monthStr = [NSString stringWithFormat:@"%ld", (long)month];
-    }
-    return [NSString stringWithFormat:@"%ld-%@-", year, monthStr];
-}
-
-+(void)getByYear:(NSInteger)year month:(NSInteger)month offset:(NSInteger)offset block:(void(^)(NSInteger year, NSInteger month, NSString *monthStr))callBack{
-    NSString *monthStr;
-    //年
-    if(month == 1 && offset < 0){
-        year = year - ceil(offset / 12);
-    }else if(month == 12 && offset > 0){
-        year = year + ceil(offset / 12);
-    }
-    //月
-    month = month + offset;
-    if(month > 12){
-        month = 1;
-    }else if(month < 1){
-        month = 12;
-    }
-    //处理月份显示
-    if(month < 10){
-        monthStr = [NSString stringWithFormat:@"0%ld", (long)month];
-    }else{
-        monthStr = [NSString stringWithFormat:@"%ld", (long)month];
-    }
+    callBack(canNext, next1Date);
 }
 
 #pragma mark -从起始日期到结束日期按照月份、类别分组获取数据

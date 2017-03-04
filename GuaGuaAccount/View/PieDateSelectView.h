@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DateSelectView : UIView
+@interface PieDateSelectView : UIView
 
 @property (strong, nonatomic) UILabel *dateLabel;
 @property (strong, nonatomic) UIButton *lastBtn;

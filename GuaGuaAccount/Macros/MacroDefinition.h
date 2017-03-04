@@ -32,4 +32,6 @@
 #define GGWeakSelfDefine __weak typeof(self) weakSelf = self;
 #define GGWeakSelf weakSelf
 
+#define DateSelectShort(selectDateStr) [selectDateStr substringWithRange:NSMakeRange(0, 7)]
+
 #endif

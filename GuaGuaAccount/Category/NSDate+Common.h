@@ -45,7 +45,6 @@
 /**
  根据偏移量算出偏移到了几月份
 
- @param currentMonth 当前月份
  @param offset 偏移量
  @return 求出的月份
  */
@@ -54,10 +53,22 @@
 /**
  根据偏移量算出偏移到了第几年
 
- @param currentYear 当年
- @param currentMonth 当前月份
  @param offset 偏移量
  @return 求出的年份
  */
 -(NSInteger)getYearByOffset:(NSInteger)offset;
+/**
+ 距离指定日期之前/之后多少个月的日期
+ 
+ @param monthes 偏移量
+ @return 日期
+ */
+-(NSDate*)distanceByOffsetMonthes:(NSInteger)monthes;
+
+/**
+ 获取该日期在这个月的第一天
+
+ @return 日期
+ */
+-(NSDate*)getFirstDateForThisMonth;
 @end

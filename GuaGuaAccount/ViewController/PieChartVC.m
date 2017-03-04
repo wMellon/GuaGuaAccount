@@ -11,11 +11,11 @@
 #import "PYOption.h"
 #import "AccountViewmodel.h"
 #import "AccountStatisticsModel.h"
-#import "DateSelectView.h"
+#import "PieDateSelectView.h"
 
 @interface PieChartVC ()
 
-@property(nonatomic, strong) DateSelectView *dateSelectView;
+@property(nonatomic, strong) PieDateSelectView *dateSelectView;
 @property(nonatomic, strong) NSMutableArray *accountList;
 @property(nonatomic, copy) NSString *dateString;//当前选中月对应的字符串
 
@@ -38,9 +38,10 @@
 
 - (void)reloadViewData{
     NSDate *now = [NSDate date];
-    self.dateString = [now formattedTimeWithFormat:DateSelectFormat];
-    self.dateSelectView.dateLabel.text = [now formattedTimeWithFormat:DateSelectFormat];
-    [self.dateSelectView.nextBtn setTitleColor:RGB(230, 230, 230) forState:UIControlStateNormal];
+    NSString *nowSelectedStr = [[now getFirstDateForThisMonth] formattedTimeWithFormat:DateSelectFormat];
+    self.dateString = nowSelectedStr;
+    self.dateSelectView.dateLabel.text = DateSelectShort(nowSelectedStr);
+    self.dateSelectView.nextBtn.enabled = NO;
     self.accountList = [AccountViewmodel getAccountByDate:self.dateString];
     [self showBasicPieDemo];
 }
@@ -54,7 +55,6 @@
  *  标准饼图
  */
 - (void)showBasicPieDemo {
-    
     NSMutableArray *dataArray = [[NSMutableArray alloc] initWithCapacity:self.accountList.count];
     NSMutableArray *dataDict = [[NSMutableArray alloc] initWithCapacity:self.accountList.count];
     NSMutableDictionary *dict;
@@ -67,7 +67,7 @@
     }
     NSString *formatter = @"{a} <br/>{b} : {c} ({d}%)";
     NSString *center = @"\"radius\":\"40%\",\"center\":[\"45%\",\"40%\"]";
-    NSString *basicPieJson = [NSString stringWithFormat:@"{\"tooltip\":{\"trigger\":\"item\",\"formatter\":\"%@\"},\"legend\":{\"orient\":\"vertical\",\"x\":\"left\",\"data\":%@},\"calculable\":false,\"series\":[{\"name\":\"访问来源\",\"type\":\"pie\",%@,\"data\":%@}]}", formatter, [dataArray yy_modelToJSONString], center, [dataDict yy_modelToJSONString]];
+    NSString *basicPieJson = [NSString stringWithFormat:@"{\"tooltip\":{\"trigger\":\"item\",\"formatter\":\"%@\"},\"legend\":{\"orient\":\"vertical\",\"x\":\"left\",\"data\":%@},\"calculable\":false,\"series\":[{\"name\":\"\",\"type\":\"pie\",%@,\"data\":%@}]}", formatter, [dataArray yy_modelToJSONString], center, [dataDict yy_modelToJSONString]];
     NSData *jsonData = [basicPieJson dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:nil];
     PYOption *option = [RMMapper objectWithClass:[PYOption class] fromDictionary:jsonDic];
@@ -81,37 +81,33 @@
 
 -(void)lastMonth{
     GGWeakSelfDefine
-    [AccountViewmodel getSelectDateBy:self.dateString monthOffset:-1 block:^(BOOL canNext, NSString *dateString) {
+    [AccountViewmodel getSelectDateStrBy:self.dateString monthOffset:-1 block:^(BOOL canNext, NSString *dateString) {
         GGWeakSelf.dateString = dateString;
-        GGWeakSelf.dateSelectView.dateLabel.text = dateString;
+        GGWeakSelf.dateSelectView.dateLabel.text = DateSelectShort(dateString);
         GGWeakSelf.accountList = [AccountViewmodel getAccountByDate:GGWeakSelf.dateString];
         [GGWeakSelf showBasicPieDemo];
         [GGWeakSelf.kEchartView loadEcharts];
-        [GGWeakSelf.dateSelectView.nextBtn setTitleColor:RGB(153, 153, 153) forState:UIControlStateNormal];
+        GGWeakSelf.dateSelectView.nextBtn.enabled = canNext;
     }];
 }
 
 -(void)nextMonth{
     GGWeakSelfDefine
-    [AccountViewmodel getSelectDateBy:self.dateString monthOffset:1 block:^(BOOL canNext, NSString *dateString) {
+    [AccountViewmodel getSelectDateStrBy:self.dateString monthOffset:1 block:^(BOOL canNext, NSString *dateString) {
         GGWeakSelf.dateString = dateString;
-        GGWeakSelf.dateSelectView.dateLabel.text = dateString;
+        GGWeakSelf.dateSelectView.dateLabel.text = DateSelectShort(dateString);;
         GGWeakSelf.accountList = [AccountViewmodel getAccountByDate:GGWeakSelf.dateString];
         [GGWeakSelf showBasicPieDemo];
         [GGWeakSelf.kEchartView loadEcharts];
-        if(!canNext){
-            [GGWeakSelf.dateSelectView.nextBtn setTitleColor:RGB(230, 230, 230) forState:UIControlStateNormal];
-        }else{
-            [GGWeakSelf.dateSelectView.nextBtn setTitleColor:RGB(153, 153, 153) forState:UIControlStateNormal];
-        }
+        GGWeakSelf.dateSelectView.nextBtn.enabled = canNext;
     }];
 }
 
 #pragma mark - Properrtys
 
--(DateSelectView *)dateSelectView{
+-(PieDateSelectView *)dateSelectView{
     if(!_dateSelectView){
-        _dateSelectView = [[DateSelectView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
+        _dateSelectView = [[PieDateSelectView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, 50)];
         [_dateSelectView.lastBtn addTarget:self action:@selector(lastMonth) forControlEvents:UIControlEventTouchUpInside];
         [_dateSelectView.nextBtn addTarget:self action:@selector(nextMonth) forControlEvents:UIControlEventTouchUpInside];
     }

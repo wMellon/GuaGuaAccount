@@ -109,4 +109,24 @@
         }
     }
 }
+
+-(NSDate*)distanceByOffsetMonthes:(NSInteger)monthes{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond) fromDate:self];
+    [components setMonth:(components.month + monthes)];
+    return [calendar dateFromComponents:components];
+}
+
+/**
+ 获取该日期在这个月的第一天
+ 
+ @return 日期
+ */
+-(NSDate*)getFirstDateForThisMonth{
+    NSDate *startDateOfDay;
+    NSTimeInterval TIOfDay;
+    //获取该日期最早的天数
+    [[NSCalendar currentCalendar] rangeOfUnit:NSCalendarUnitMonth startDate:&startDateOfDay interval:&TIOfDay forDate:self];
+    return startDateOfDay;
+}
 @end
