@@ -23,6 +23,7 @@
 @property(nonatomic, strong) AddAccountView *addAccountView;
 @property(nonatomic, strong) NSMutableArray *categorySource;
 @property(nonatomic, strong) AccountModel *accountModel;
+@property(nonatomic, strong) NSIndexPath *currentIndex;
 
 @end
 
@@ -84,7 +85,16 @@
     }
     //加载之后，重新刷新UI
     [self refreshUI];
+    
+    if(self.currentIndex){
+        CategoryCell *preCell = (CategoryCell*)[self.addAccountView.categoryCollectionView cellForItemAtIndexPath:self.currentIndex];
+        preCell.label.textColor = [UIColor blackColor];
+        preCell.label.backgroundColor = RGB(170, 170, 170);
+        self.currentIndex = nil;
+    }
     [self.addAccountView.categoryCollectionView reloadData];
+    self.accountModel.categoryId = @"";
+    self.accountModel.categoryName = @"";
 }
 
 
@@ -127,25 +137,24 @@
     CategoryModel *model = self.categorySource[indexPath.row];
     CategoryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"Category" forIndexPath:indexPath];
     cell.label.text = model.categoryName;
-    cell.label.textColor = [UIColor blackColor];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     CategoryCell *cell = (CategoryCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    if(self.currentIndex){
+        CategoryCell *preCell = (CategoryCell*)[collectionView cellForItemAtIndexPath:self.currentIndex];
+        preCell.label.textColor = [UIColor blackColor];
+        preCell.label.backgroundColor = RGB(170, 170, 170);
+        self.currentIndex = indexPath;
+    }
     cell.label.textColor = [UIColor whiteColor];
     cell.label.backgroundColor = [UIColor colorWithRed:0 green:0.722 blue:1 alpha:1];
     CategoryModel *model = self.categorySource[indexPath.row];
     self.accountModel.categoryId = model.categoryId;
     self.accountModel.categoryName = model.categoryName;
+    self.currentIndex = indexPath;
 }
-
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
-    CategoryCell *cell = (CategoryCell*)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.label.textColor = [UIColor blackColor];
-    cell.label.backgroundColor = RGB(170, 170, 170);
-}
-
 
 #pragma mark - View delegate
 
@@ -155,9 +164,9 @@
 }
 
 -(void)refreshUI{
-//    CGFloat width = self.addAccountView.categoryCollectionView.frameWidth / NumOfEachSection - HorizontalOffset * (NumOfEachSection - 1);
-//    NSInteger numRow = ceil(self.categorySource.count / NumOfEachSection);
-//    if(numRow * width > )
+    //    CGFloat width = self.addAccountView.categoryCollectionView.frameWidth / NumOfEachSection - HorizontalOffset * (NumOfEachSection - 1);
+    //    NSInteger numRow = ceil(self.categorySource.count / NumOfEachSection);
+    //    if(numRow * width > )
 }
 
 #pragma mark - Other delegate
@@ -203,7 +212,6 @@
     [self showTipNoBtn:@"保存成功"];
     //保存之后要返回原先状态
     [self dataInit];
-    [self.addAccountView.categoryCollectionView reloadData];
     [self reloadCategory];
     [self reloadLeftMoney];
 }
@@ -215,7 +223,7 @@
         _addAccountView = [[AddAccountView alloc] init];
         _addAccountView.categoryCollectionView.delegate = self;
         _addAccountView.categoryCollectionView.dataSource = self;
-//        _addAccountView.categoryCollectionView.collectionViewLayout.
+        //        _addAccountView.categoryCollectionView.collectionViewLayout.
         [_addAccountView.categoryCollectionView registerNib:[UINib nibWithNibName:@"CategoryCell" bundle:nil] forCellWithReuseIdentifier:@"Category"];
         [_addAccountView.moneyTextField addTarget:self action:@selector(priceChg:) forControlEvents:UIControlEventEditingChanged];
         [_addAccountView.typeBtn addTarget:self action:@selector(typeChg:) forControlEvents:UIControlEventTouchUpInside];
